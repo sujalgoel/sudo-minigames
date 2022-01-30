@@ -48,4 +48,4 @@ await Calculator({
 - **[Sujal Goel#7602](https://github.com/sujalgoel)**
 
 ## Support ❔
-<a href="https://discord.gg/ANzBrkcXZy"><img src="https://invidget.switchblade.xyz/ANzBrkcXZy" /></a>
+<a href="https://discord.gg/EKQtnY8Z9h"><img src="https://invidget.switchblade.xyz/EKQtnY8Z9h" /></a>
