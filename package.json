@@ -1,6 +1,6 @@
 {
 	"name": "sudo-minigames",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A fun npm package to play games within Discord.",
 	"main": "index.js",
 	"scripts": {
@@ -22,10 +22,8 @@
 	},
 	"dependencies": {
 		"axios": "^0.25.0",
-		"chalk": "^5.0.0",
 		"discord.js": "^13.6.0",
-		"mathjs": "^10.1.0",
-		"string-width": "^5.1.0"
+		"mathjs": "^10.1.0"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.12"

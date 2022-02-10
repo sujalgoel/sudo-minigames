@@ -3,121 +3,61 @@ const functions = require('../functions/function');
 
 module.exports = async (options) => {
 	functions.checkForUpdates();
-	if (!options.message) {
-		throw new Error('Sudo Error: message argument was not specified.');
-	}
-	if (typeof options.message !== 'object') {
-		throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
-	}
+	if (!options.message) throw new Error('Sudo Error: message argument was not specified.');
+	if (typeof options.message !== 'object') throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
 
 	if (!options.word) options.word = functions.getRandomSentence(1);
 
 	if (!options.button) options.button = {};
-	if (typeof options.button !== 'object') {
-		throw new TypeError('Sudo Error: button must be an object.');
-	}
+	if (typeof options.button !== 'object') throw new TypeError('Sudo Error: button must be an object.');
 
 	if (!options.button.cancel) options.button.cancel = 'Cancel';
-	if (typeof options.button.cancel !== 'string') {
-		throw new TypeError('Sudo Error: cancel button text must be a string.');
-	}
+	if (typeof options.button.cancel !== 'string') throw new TypeError('Sudo Error: cancel button text must be a string.');
 
 	if (!options.button.reshuffle) options.button.reshuffle = 'Reshuffle';
-	if (typeof options.button.reshuffle !== 'string') {
-		throw new TypeError('Sudo Error: reshuffle button text must be a string.');
-	}
+	if (typeof options.button.reshuffle !== 'string') throw new TypeError('Sudo Error: reshuffle button text must be a string.');
 
 	if (!options.embed) options.embed = {};
-	if (typeof options.embed !== 'object') {
-		throw new TypeError('Sudo Error: embed must be an object.');
-	}
+	if (typeof options.embed !== 'object') throw new TypeError('Sudo Error: embed must be an object.');
 
-	if (!options.embed.title) {
-		options.embed.title = 'Shuffle Guess | Sudo Development';
-	}
-	if (typeof options.embed.title !== 'string') {
-		throw new TypeError('Sudo Error: embed title must be a string.');
-	}
+	if (!options.embed.title) options.embed.title = 'Shuffle Guess | Sudo Development';
+	if (typeof options.embed.title !== 'string') throw new TypeError('Sudo Error: embed title must be a string.');
 
 	if (!options.embed.color) options.embed.color = functions.randomHexColor();
-	if (typeof options.embed.color !== 'string') {
-		throw new TypeError('Sudo Error: embed color must be a string.');
-	}
+	if (typeof options.embed.color !== 'string') throw new TypeError('Sudo Error: embed color must be a string.');
 
-	if (!options.embed.footer) {
-		options.embed.footer = '©️ Sudo Development';
-	}
-	if (typeof options.embed.footer !== 'string') {
-		throw new TypeError('Sudo Error: embed footer must be a string.');
-	}
+	if (!options.embed.footer) options.embed.footer = '©️ Sudo Development';
+	if (typeof options.embed.footer !== 'string') throw new TypeError('Sudo Error: embed footer must be a string.');
 
 	if (!options.embed.timestamp) options.embed.timestamp = true;
-	if (typeof options.embed.timestamp !== 'boolean') {
-		throw new TypeError('Sudo Error: timestamp must be a boolean.');
-	}
+	if (typeof options.embed.timestamp !== 'boolean') throw new TypeError('Sudo Error: timestamp must be a boolean.');
 
-	if (!options.startMessage) {
-		options.startMessage =
-			'I shuffled a word, it is **`{{word}}`**. You have **{{time}}** to find the correct word!';
-	}
-	if (typeof options.startMessage !== 'string') {
-		throw new TypeError('Sudo Error: startMessage must be a string.');
-	}
+	if (!options.startMessage) options.startMessage = 'I shuffled a word, it is **`{{word}}`**. You have **{{time}}** to find the correct word!';
+	if (typeof options.startMessage !== 'string') throw new TypeError('Sudo Error: startMessage must be a string.');
 
-	if (!options.winMessage) {
-		options.winMessage =
-			'GG, It was **{{word}}**! You gave the correct answer in **{{time}}.**';
-	}
-	if (typeof options.winMessage !== 'string') {
-		throw new TypeError('Sudo Error: winMessage must be a string.');
-	}
+	if (!options.winMessage) options.winMessage = 'GG, It was **{{word}}**! You gave the correct answer in **{{time}}.**';
+	if (typeof options.winMessage !== 'string') throw new TypeError('Sudo Error: winMessage must be a string.');
 
-	if (!options.loseMessage) {
-		options.loseMessage =
-			'Better luck next time! The correct answer was **{{answer}}**.';
-	}
-	if (typeof options.loseMessage !== 'string') {
-		throw new TypeError('Sudo Error: loseMessage must be a string.');
-	}
+	if (!options.loseMessage) options.loseMessage = 'Better luck next time! The correct answer was **{{answer}}**.';
+	if (typeof options.loseMessage !== 'string') throw new TypeError('Sudo Error: loseMessage must be a string.');
 
-	if (!options.incorrectMessage) {
-		options.incorrectMessage = 'No {{author}}! The word isn\'t `{{answer}}`.';
-	}
-	if (typeof options.incorrectMessage !== 'string') {
-		throw new TypeError('Sudo Error: loseMessage must be a string.');
-	}
+	if (!options.incorrectMessage) options.incorrectMessage = 'No {{author}}! The word isn\'t `{{answer}}`.';
+	if (typeof options.incorrectMessage !== 'string') throw new TypeError('Sudo Error: loseMessage must be a string.');
 
-	if (!options.othersMessage) {
-		options.othersMessage = 'Only <@{{author}}> can use the buttons!';
-	}
-	if (typeof options.othersMessage !== 'string') {
-		throw new TypeError('Sudo Error: othersMessage must be a string.');
-	}
+	if (!options.othersMessage) options.othersMessage = 'Only <@{{author}}> can use the buttons!';
+	if (typeof options.othersMessage !== 'string') throw new TypeError('Sudo Error: othersMessage must be a string.');
 
 	if (!options.time) options.time = 60000;
-	if (parseInt(options.time) < 10000) {
-		throw new Error(
-			'Sudo Error: time argument must be greater than 10 Seconds (in ms i.e. 10000).',
-		);
-	}
-	if (typeof options.time !== 'number') {
-		throw new TypeError('Sudo Error: time must be a number.');
-	}
+	if (parseInt(options.time) < 10000) throw new Error('Sudo Error: time argument must be greater than 10 Seconds (in ms i.e. 10000).',);
+	if (typeof options.time !== 'number') throw new TypeError('Sudo Error: time must be a number.');
 
-	const id1 = functions.getRandomID(20);
 
-	const id2 =	functions.getRandomID(20);
-
+	const id1 = functions.getRandomID();
+	const id2 =	functions.getRandomID();
 	const word = functions.shuffleString(options.word.toString());
 
-	const disbut = new Discord.MessageButton()
-		.setLabel(options.button.reshuffle)
-		.setCustomId(id1)
-		.setStyle('SUCCESS');
-	const cancel = new Discord.MessageButton()
-		.setLabel(options.button.cancel)
-		.setCustomId(id2)
-		.setStyle('DANGER');
+	const disbut = new Discord.MessageButton().setLabel(options.button.reshuffle).setCustomId(id1).setStyle('SUCCESS');
+	const cancel = new Discord.MessageButton().setLabel(options.button.cancel).setCustomId(id2).setStyle('DANGER');
 	const emd = new Discord.MessageEmbed()
 		.setColor(options.embed.color)
 		.setTitle(options.embed.title)
@@ -127,10 +67,7 @@ module.exports = async (options) => {
 				.replace('{{word}}', word)
 				.replace('{{time}}', functions.convertTime(options.time)),
 		);
-	if (options.embed.timestamp) {
-		emd.setTimestamp();
-	}
-
+	if (options.embed.timestamp) emd.setTimestamp();
 	const embed = await options.message.reply({
 		embeds: [emd],
 		components: [
@@ -143,11 +80,7 @@ module.exports = async (options) => {
 
 	const gameCreatedAt = Date.now();
 	const filter = (m) => m.author.id === options.message.author.id;
-	const gameCollector = options.message.channel.createMessageCollector({
-		filter,
-		time: options.time,
-		errors: ['time'],
-	});
+	const gameCollector = options.message.channel.createMessageCollector({filter, time: options.time, errors: ['time']});
 
 	gameCollector.on('collect', async (msg) => {
 		if (msg.content.toLowerCase() === options.word.toString().toLowerCase()) {
@@ -163,9 +96,7 @@ module.exports = async (options) => {
 						.replace('{{word}}', options.word.toString())
 						.replace('{{time}}', time),
 				);
-			if (options.embed.timestamp) {
-				_embed.setTimestamp();
-			}
+			if (options.embed.timestamp) _embed.setTimestamp();
 			msg.reply({ embeds: [_embed] });
 			embed.edit({
 				embeds: [emd],
@@ -185,16 +116,12 @@ module.exports = async (options) => {
 				)
 				.setColor(options.embed.color)
 				.setFooter(options.embed.footer);
-			if (options.embed.timestamp) {
-				_embed.setTimestamp();
-			}
+			if (options.embed.timestamp) _embed.setTimestamp();
 			msg.reply({ embeds: [_embed] });
 		}
 	});
 
-	const GameCollector = embed.createMessageComponentCollector({
-		filter: (fn) => fn,
-	});
+	const GameCollector = embed.createMessageComponentCollector({filter: (fn) => fn});
 
 	GameCollector.on('collect', async (btn) => {
 		if (btn.user.id !== options.message.author.id) {
@@ -221,9 +148,7 @@ module.exports = async (options) => {
 						)
 						.replace('{{time}}', functions.convertTime(options.time)),
 				);
-			if (options.embed.timestamp) {
-				_embed.setTimestamp();
-			}
+			if (options.embed.timestamp) _embed.setTimestamp();
 			return embed.edit({
 				embeds: [_embed],
 				components: [
@@ -244,9 +169,7 @@ module.exports = async (options) => {
 				.setDescription(
 					options.loseMessage.replace('{{answer}}', options.word.toString()),
 				);
-			if (options.embed.timestamp) {
-				_embed.setTimestamp();
-			}
+			if (options.embed.timestamp) _embed.setTimestamp();
 			return embed.edit({
 				embeds: [_embed],
 				components: [
@@ -269,9 +192,7 @@ module.exports = async (options) => {
 				.setDescription(
 					options.loseMessage.replace('{{answer}}', options.word.toString()),
 				);
-			if (options.embed.timestamp) {
-				_embed.setTimestamp();
-			}
+			if (options.embed.timestamp) _embed.setTimestamp();
 			options.message.reply({ embeds: [_embed] });
 			return embed.edit({
 				embeds: [emd],

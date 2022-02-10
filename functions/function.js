@@ -1,19 +1,8 @@
-const chalk = require('chalk');
 const words = require('../data/words.json');
-const { boxConsole } = require('./boxConsole');
 const { MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-	getRandomID: function(length) {
-		const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-		let result = '';
-		for (let i = 0; i < length; i++) {
-			result += randomChars.charAt(
-				Math.floor(Math.random() * randomChars.length),
-			);
-		}
-		return result;
-	},
+	getRandomID: function() { return String(Math.random()) },
 	getRandomSentence: function(length) {
 		const word = [];
 		for (let i = 0; i < length; i++) {
@@ -73,50 +62,12 @@ module.exports = {
 		}
 		return array;
 	},
-	randomHexColor: function() {
-		return (
-			'#' +
-			('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
-		);
-	},
+	randomHexColor: function() { return Math.floor(Math.random() * (0xffffff + 1)); },
 	checkForUpdates: async function() {
 		const package = require('../../../package.json');
 		const vLatest = require('../package.json').version;
-		if (package.dependencies['sudo-minigames']) {
-			if (vLatest !== package.dependencies['sudo-minigames'].slice(1)) {
-				const msg = chalk(
-					`new ${chalk.green('version')} of ${chalk.yellow(
-						'sudo-minigames',
-					)} is available! ${chalk.red(
-						package.dependencies['sudo-minigames'].slice(1),
-					)} -> ${chalk.green(vLatest)}`,
-				);
-				const tip = chalk(
-					`registry ${chalk.cyan('https://www.npmjs.com/package/sudo-minigames')}`,
-				);
-				const install = chalk(
-					`run ${chalk.green('npm i sudo-minigames@latest')} to update`,
-				);
-				boxConsole([msg, tip, install]);
-			}
-		} else if (package.devDependencies['sudo-minigames']) {
-			if (vLatest !== package.devDependencies['sudo-minigames'].slice(1)) {
-				const msg = chalk(
-					`new ${chalk.green('version')} of ${chalk.yellow(
-						'sudo-minigames',
-					)} is available! ${chalk.red(
-						package.devDependencies['sudo-minigames'].slice(1),
-					)} -> ${chalk.green(vLatest)}`,
-				);
-				const tip = chalk(
-					`registry ${chalk.cyan('https://www.npmjs.com/package/sudo-minigames')}`,
-				);
-				const install = chalk(
-					`run ${chalk.green('npm i sudo-minigames@latest')} to update`,
-				);
-				boxConsole([msg, tip, install]);
-			}
-		}
+		const where = package.dependencies['sudo-minigames'] || package.devDependencies['sudo-minigames'];
+		if (where.slice(1) !== vLatest) console.log(`\x1b[41m[WARNING] \x1b[0mOutdated version of \x1b[33msudo-minigames\x1b[0m. npm i sudo-minigames@latest to update to \x1b[32m${vLatest}\x1b[0m.`)
 	},
 	addRow: function(btns) {
 		const row = new MessageActionRow();
@@ -166,4 +117,4 @@ module.exports = {
 			return btn;
 		}
 	},
-};
+}

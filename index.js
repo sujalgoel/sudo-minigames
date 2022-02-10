@@ -3,7 +3,7 @@
 const flip = require('./data/flip.js');
 const tiny = require('./data/tiny.js');
 const bent = require('./data/bent.js');
-const copy = require('./data/copy.js');
+const copy = require('./data/copy.js')
 
 module.exports = {
 	bent: function(str) {
