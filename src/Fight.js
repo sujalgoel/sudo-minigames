@@ -3,176 +3,83 @@ const functions = require('../functions/function');
 
 module.exports = async (options) => {
 	functions.checkForUpdates();
-	if (!options.message) {
-		throw new Error('Sudo Error: message argument was not specified.');
-	}
-	if (typeof options.message !== 'object') {
-		throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
-	}
+	if (!options.message) throw new Error('Sudo Error: message argument was not specified.');
+	if (typeof options.message !== 'object') throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
 
-	if (!options.opponent) {
-		throw new Error('Sudo Error: opponent argument was not specified.');
-	}
-	if (typeof options.opponent !== 'object') {
-		throw new TypeError('Sudo Error: Invalid Discord User was provided.');
-	}
+	if (!options.opponent) throw new Error('Sudo Error: opponent argument was not specified.');
+	if (typeof options.opponent !== 'object') throw new TypeError('Sudo Error: Invalid Discord User was provided.');
 
 	if (!options.embed) options.embed = {};
-	if (typeof options.embed !== 'object') {
-		throw new TypeError('Sudo Error: embed must be an object.');
-	}
+	if (typeof options.embed !== 'object') throw new TypeError('Sudo Error: embed must be an object.');
 
-	if (!options.embed.title) {
-		options.embed.title = 'Fight | Sudo Development';
-	}
-	if (typeof options.embed.title !== 'string') {
-		throw new TypeError('Sudo Error: embed title must be a string.');
-	}
+	if (!options.embed.title) options.embed.title = 'Fight | Sudo Development';
+	if (typeof options.embed.title !== 'string') throw new TypeError('Sudo Error: embed title must be a string.');
 
-	if (!options.embed.color) {
-		options.embed.color = functions.randomHexColor();
-	}
-	if (typeof options.embed.color !== 'string') {
-		throw new TypeError('Sudo Error: embed color must be a string.');
-	}
+	if (!options.embed.color) options.embed.color = functions.randomHexColor();
+	if (typeof options.embed.color !== 'string') throw new TypeError('Sudo Error: embed color must be a string.');
 
-	if (!options.embed.footer) {
-		options.embed.footer = '©️ Sudo Development';
-	}
-	if (typeof options.embed.footer !== 'string') {
-		throw new TypeError('Sudo Error: embed footer must be a string.');
-	}
+	if (!options.embed.footer) options.embed.footer = '©️ Sudo Development';
+	if (typeof options.embed.footer !== 'string') throw new TypeError('Sudo Error: embed footer must be a string.');
 
-	if (!options.embed.timestamp) {
-		options.embed.timestamp = true;
-	}
-	if (typeof options.embed.timestamp !== 'boolean') {
-		throw new TypeError('Sudo Error: setTimestamp must be a boolean.');
-	}
+	if (!options.embed.timestamp) options.embed.timestamp = true;
+	if (typeof options.embed.timestamp !== 'boolean') throw new TypeError('Sudo Error: setTimestamp must be a boolean.');
 
 	if (!options.buttons) options.buttons = {};
-	if (typeof options.buttons !== 'object') {
-		throw new TypeError('Sudo Error: buttons must be an object.');
-	}
+	if (typeof options.buttons !== 'object') throw new TypeError('Sudo Error: buttons must be an object.');
 
-	if (!options.buttons.hit) {
-		options.buttons.hit = 'Hit';
-	}
-	if (typeof options.buttons.hit !== 'string') {
-		throw new Error('Sudo Error: hit button text must be a string.');
-	}
+	if (!options.buttons.hit) options.buttons.hit = 'Hit';
+	if (typeof options.buttons.hit !== 'string') throw new Error('Sudo Error: hit button text must be a string.');
 
-	if (!options.buttons.heal) {
-		options.buttons.heal = 'Heal';
-	}
-	if (typeof options.buttons.heal !== 'string') {
-		throw new Error('Sudo Error: heal button text must be a string.');
-	}
+	if (!options.buttons.heal) options.buttons.heal = 'Heal';
+	if (typeof options.buttons.heal !== 'string') throw new Error('Sudo Error: heal button text must be a string.');
 
-	if (!options.buttons.cancel) {
-		options.buttons.cancel = 'Stop';
-	}
-	if (typeof options.buttons.cancel !== 'string') {
-		throw new Error('Sudo Error: cancel button text must be a string.');
-	}
+	if (!options.buttons.cancel) options.buttons.cancel = 'Stop';
+	if (typeof options.buttons.cancel !== 'string') throw new Error('Sudo Error: cancel button text must be a string.');
 
-	if (!options.buttons.accept) {
-		options.buttons.accept = 'Accept';
-	}
-	if (typeof options.buttons.accept !== 'string') {
-		throw new Error('Sudo Error: accept button text must be a string.');
-	}
+	if (!options.buttons.accept) options.buttons.accept = 'Accept';
+	if (typeof options.buttons.accept !== 'string') throw new Error('Sudo Error: accept button text must be a string.');
 
-	if (!options.buttons.deny) {
-		options.buttons.deny = 'Deny';
-	}
-	if (typeof options.buttons.deny !== 'string') {
-		throw new Error('Sudo Error: deny button text must be a string.');
-	}
+	if (!options.buttons.deny) options.buttons.deny = 'Deny';
+	if (typeof options.buttons.deny !== 'string') throw new Error('Sudo Error: deny button text must be a string.');
 
-	if (!options.acceptMessage) {
-		options.acceptMessage =
-			'<@{{challenger}}> has challenged <@{{opponent}}> for a fight!';
-	}
-	if (typeof options.acceptMessage !== 'string') {
-		throw new Error('Sudo Error: acceptMessage must be a string.');
-	}
+	if (!options.acceptMessage) options.acceptMessage = '<@{{challenger}}> has challenged <@{{opponent}}> for a fight!';
+	if (typeof options.acceptMessage !== 'string') throw new Error('Sudo Error: acceptMessage must be a string.');
 
-	if (!options.winMessage) {
-		options.winMessage = 'GG, <@{{winner}}> won the fight!';
-	}
-	if (typeof options.winMessage !== 'string') {
-		throw new TypeError('Sudo Error: winMessage must be a string.');
-	}
+	if (!options.winMessage) options.winMessage = 'GG, <@{{winner}}> won the fight!';
+	if (typeof options.winMessage !== 'string') throw new TypeError('Sudo Error: winMessage must be a string.');
 
-	if (!options.endMessage) {
-		options.endMessage =
-			'<@{{opponent}}> didn\'t answer in time. So, I dropped the game!';
-	}
-	if (typeof options.endMessage !== 'string') {
-		throw new TypeError('Sudo Error: endMessage must be a string.');
-	}
+	if (!options.endMessage) options.endMessage = '<@{{opponent}}> didn\'t answer in time. So, I dropped the game!';
+	if (typeof options.endMessage !== 'string') throw new TypeError('Sudo Error: endMessage must be a string.');
 
-	if (!options.cancelMessage) {
-		options.cancelMessage = '<@{{opponent}}> refused to have a fight with you!';
-	}
-	if (typeof options.cancelMessage !== 'string') {
-		throw new TypeError('Sudo Error: cancelMessage must be a string.');
-	}
+	if (!options.cancelMessage) options.cancelMessage = '<@{{opponent}}> refused to have a fight with you!';
+	if (typeof options.cancelMessage !== 'string') throw new TypeError('Sudo Error: cancelMessage must be a string.');
 
-	if (!options.fightMessage) {
-		options.fightMessage = '{{player}} you go first!';
-	}
-	if (typeof options.fightMessage !== 'string') {
-		throw new TypeError('Sudo Error: fightMessage must be a string.');
-	}
+	if (!options.fightMessage) options.fightMessage = '{{player}} you go first!';
+	if (typeof options.fightMessage !== 'string') throw new TypeError('Sudo Error: fightMessage must be a string.');
 
-	if (!options.othersMessage) {
-		options.othersMessage = 'Only {{author}} can use the buttons!';
-	}
-	if (typeof options.othersMessage !== 'string') {
-		throw new TypeError('Sudo Error: othersMessage must be a string.');
-	}
+	if (!options.othersMessage) options.othersMessage = 'Only {{author}} can use the buttons!';
+	if (typeof options.othersMessage !== 'string') throw new TypeError('Sudo Error: othersMessage must be a string.');
 
-	if (!options.opponentsTurnMessage) {
-		options.opponentsTurnMessage = 'Please wait for your opponents move!';
-	}
-	if (typeof options.opponentsTurnMessage !== 'string') {
-		throw new TypeError('Sudo Error: opponentsTurnMessage must be a string.');
-	}
+	if (!options.opponentsTurnMessage) options.opponentsTurnMessage = 'Please wait for your opponents move!';
+	if (typeof options.opponentsTurnMessage !== 'string') throw new TypeError('Sudo Error: opponentsTurnMessage must be a string.');
 
-	if (!options.highHealthMessage) {
-		options.highHealthMessage = 'You cannot heal if your HP is above 80!';
-	}
-	if (typeof options.highHealthMessage !== 'string') {
-		throw new TypeError('Sudo Error: highHealthMessage must be a string.');
-	}
+	if (!options.highHealthMessage) options.highHealthMessage = 'You cannot heal if your HP is above 80!';
+	if (typeof options.highHealthMessage !== 'string') throw new TypeError('Sudo Error: highHealthMessage must be a string.');
 
-	if (!options.lowHealthMessage) {
-		options.lowHealthMessage =
-			'You cannot cancel the fight if your HP is below 50!';
-	}
-	if (typeof options.lowHealthMessage !== 'string') {
-		throw new TypeError('Sudo Error: lowHealthMessage must be a string.');
-	}
+	if (!options.lowHealthMessage) options.lowHealthMessage = 'You cannot cancel the fight if your HP is below 50!';
+	if (typeof options.lowHealthMessage !== 'string') throw new TypeError('Sudo Error: lowHealthMessage must be a string.');
 
-	const id1 =	functions.getRandomID(20);
-
-	const id2 =	functions.getRandomID(20);
-
-	const id3 = functions.getRandomID(20);
+	const id1 =	functions.getRandomID();
+	const id2 =	functions.getRandomID();
+	const id3 = functions.getRandomID();
 
 	const oppenent = options.opponent;
 	const challenger = options.message.author;
+
 	if (oppenent.bot || oppenent.id === challenger.id) return;
-	const acceptbutton = new Discord.MessageButton()
-		.setStyle('SUCCESS')
-		.setLabel(options.buttons.accept)
-		.setCustomId('accept');
-	const denybutton = new Discord.MessageButton()
-		.setStyle('DANGER')
-		.setLabel(options.buttons.deny)
-		.setCustomId('deny');
+
+	const acceptbutton = new Discord.MessageButton().setStyle('SUCCESS').setLabel(options.buttons.accept).setCustomId('accept');
+	const denybutton = new Discord.MessageButton().setStyle('DANGER').setLabel(options.buttons.deny).setCustomId('deny');
 
 	const embed = new Discord.MessageEmbed()
 		.setTitle(options.embed.title)
@@ -183,19 +90,14 @@ module.exports = async (options) => {
 		)
 		.setFooter(options.embed.footer)
 		.setColor(options.embed.color);
-	if (options.embed.timestamp) {
-		embed.setTimestamp();
-	}
+	if (options.embed.timestamp) embed.setTimestamp();
 
 	const question = await options.message.reply({
 		embeds: [embed],
 		components: [{ type: 1, components: [acceptbutton, denybutton] }],
 	});
 
-	const Collector = await question.createMessageComponentCollector({
-		filter: (fn) => fn,
-		time: 60000,
-	});
+	const Collector = await question.createMessageComponentCollector({filter: (fn) => fn,time: 60000});
 
 	Collector.on('collect', async (_btn) => {
 		if (_btn.member.id !== oppenent.id) {
@@ -220,9 +122,8 @@ module.exports = async (options) => {
 				)
 				.setFooter(options.embed.footer)
 				.setColor(options.embed.color);
-			if (options.embed.timestamp) {
-				emd.setTimestamp();
-			}
+			if (options.embed.timestamp) em.setTimestamp();
+
 			Collector.stop();
 			return question.edit({
 				embeds: [emd],
@@ -247,32 +148,16 @@ module.exports = async (options) => {
 				},
 			];
 			let player = Math.floor(Math.random() * gameData.length);
-			const btn1 = new Discord.MessageButton()
-				.setLabel(options.buttons.hit)
-				.setCustomId(id1)
-				.setStyle('DANGER');
-			const btn2 = new Discord.MessageButton()
-				.setLabel(options.buttons.heal)
-				.setCustomId(id2)
-				.setStyle('SUCCESS');
-			const btn3 = new Discord.MessageButton()
-				.setLabel(options.buttons.cancel)
-				.setCustomId(id3)
-				.setStyle('SECONDARY');
-			let row = new Discord.MessageActionRow()
-				.addComponents(btn1)
-				.addComponents(btn2)
-				.addComponents(btn3);
+			const btn1 = new Discord.MessageButton().setLabel(options.buttons.hit).setCustomId(id1).setStyle('DANGER');
+			const btn2 = new Discord.MessageButton().setLabel(options.buttons.heal).setCustomId(id2).setStyle('SUCCESS');
+			const btn3 = new Discord.MessageButton().setLabel(options.buttons.cancel).setCustomId(id3).setStyle('SECONDARY');
+			let row = new Discord.MessageActionRow().addComponents(btn1).addComponents(btn2).addComponents(btn3);
 			const _embed = new Discord.MessageEmbed()
 				.setTitle(options.embed.title)
-				.setDescription(
-					options.fightMessage.replace('{{player}}', gameData[player].member),
-				)
+				.setDescription(options.fightMessage.replace('{{player}}', gameData[player].member),)
 				.setFooter(options.embed.footer)
 				.setColor(options.embed.color);
-			if (options.embed.timestamp) {
-				_embed.setTimestamp();
-			}
+			if (options.embed.timestamp) _embed.setTimestamp();
 			question.edit({
 				embeds: [_embed],
 				components: [row],
@@ -307,14 +192,10 @@ module.exports = async (options) => {
 							if (gameData[player].member.id == options.message.author.id) {
 								const __embed = new Discord.MessageEmbed()
 									.setTitle(options.embed.title)
-									.setDescription(
-										`(:punch:) ${gameData[player].member.username} — ${gameData[player].health} HP - **versus** - **${gameData[tempPlayer].member.username}** — ${gameData[tempPlayer].health} HP`,
-									)
+									.setDescription(`(:punch:) ${gameData[player].member.username} — ${gameData[player].health} HP - **versus** - **${gameData[tempPlayer].member.username}** — ${gameData[tempPlayer].health} HP`,)
 									.setFooter(options.embed.footer)
 									.setColor(options.embed.color);
-								if (options.embed.timestamp) {
-									__embed.setTimestamp();
-								}
+								if (options.embed.timestamp) __embed.setTimestamp();
 								question.edit({
 									embeds: [__embed],
 									components: [row],
@@ -322,18 +203,11 @@ module.exports = async (options) => {
 							} else if (gameData[player].member.id == options.opponent.id) {
 								const __embed = new Discord.MessageEmbed()
 									.setTitle(options.embed.title)
-									.setDescription(
-										`**${gameData[tempPlayer].member.username}** — ${gameData[tempPlayer].health} HP - **versus** - ${gameData[player].member.username} — ${gameData[player].health} HP (:punch:)`,
-									)
+									.setDescription(`**${gameData[tempPlayer].member.username}** — ${gameData[tempPlayer].health} HP - **versus** - ${gameData[player].member.username} — ${gameData[player].health} HP (:punch:)`,)
 									.setFooter(options.embed.footer)
 									.setColor(options.embed.color);
-								if (options.embed.timestamp) {
-									__embed.setTimestamp();
-								}
-								question.edit({
-									embeds: [__embed],
-									components: [row],
-								});
+								if (options.embed.timestamp) __embed.setTimestamp();
+								question.edit({embeds: [__embed],components: [row]});
 							}
 							player = (player + 1) % 2;
 						} else if (msg.customId === id2) {
@@ -368,9 +242,7 @@ module.exports = async (options) => {
 										)
 										.setFooter(options.embed.footer)
 										.setColor(options.embed.color);
-									if (options.embed.timestamp) {
-										__embed.setTimestamp();
-									}
+									if (options.embed.timestamp) __embed.setTimestamp();
 									question.edit({
 										embeds: [__embed],
 										components: [row],
@@ -383,13 +255,8 @@ module.exports = async (options) => {
 										)
 										.setFooter(options.embed.footer)
 										.setColor(options.embed.color);
-									if (options.embed.timestamp) {
-										__embed.setTimestamp();
-									}
-									question.edit({
-										embeds: [__embed],
-										components: [row],
-									});
+									if (options.embed.timestamp) __embed.setTimestamp();
+									question.edit({embeds: [__embed],components: [row]});
 								}
 								player = (player + 1) % 2;
 							}
@@ -410,10 +277,7 @@ module.exports = async (options) => {
 								btn1.setDisabled();
 								btn2.setDisabled();
 								btn3.setDisabled();
-								row = new Discord.MessageActionRow()
-									.addComponents(btn1)
-									.addComponents(btn2)
-									.addComponents(btn3);
+								row = new Discord.MessageActionRow().addComponents(btn1).addComponents(btn2).addComponents(btn3);
 								gameCollector.stop();
 								const __embed = new Discord.MessageEmbed()
 									.setTitle(options.embed.title)
@@ -425,23 +289,15 @@ module.exports = async (options) => {
 									)
 									.setFooter(options.embed.footer)
 									.setColor(options.embed.color);
-								if (options.embed.timestamp) {
-									__embed.setTimestamp();
-								}
-								question.edit({
-									embeds: [__embed],
-									components: [row],
-								});
+								if (options.embed.timestamp) __embed.setTimestamp();
+								question.edit({embeds: [__embed],components: [row]});
 							}
 						}
 						if (checkHealth(player)) {
 							btn1.setDisabled();
 							btn2.setDisabled();
 							btn3.setDisabled();
-							row = new Discord.MessageActionRow()
-								.addComponents(btn1)
-								.addComponents(btn2)
-								.addComponents(btn3);
+							row = new Discord.MessageActionRow().addComponents(btn1).addComponents(btn2).addComponents(btn3);
 							gameCollector.stop();
 							const tempPlayer = (player + 1) % 2;
 							const __embed = new Discord.MessageEmbed()
@@ -454,9 +310,7 @@ module.exports = async (options) => {
 								)
 								.setFooter(options.embed.footer)
 								.setColor(options.embed.color);
-							if (options.embed.timestamp) {
-								__embed.setTimestamp();
-							}
+							if (options.embed.timestamp) __embed.setTimestamp();
 							question.edit({
 								embeds: [__embed],
 								components: [row],
@@ -498,7 +352,7 @@ module.exports = async (options) => {
 			});
 		}
 	});
-	Collector.on('end', async (msg, reason) => {
+	Collector.on('end', async ( _msg, reason) => {
 		if (reason === 'time') {
 			denybutton.setDisabled();
 			acceptbutton.setDisabled();

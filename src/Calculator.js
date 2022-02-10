@@ -4,71 +4,29 @@ const functions = require('../functions/function');
 
 module.exports = async (options) => {
 	functions.checkForUpdates();
-	if (!options.message) {
-		throw new Error('Sudo Error: message argument was not specified.');
-	}
-	if (typeof options.message !== 'object') {
-		throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
-	}
-
+	if (!options.message) throw new Error('Sudo Error: message argument was not specified.');
+	if (typeof options.message !== 'object') throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
 	if (!options.embed) options.embed = {};
-	if (typeof options.embed !== 'object') {
-		throw new TypeError('Sudo Error: embed must be an object.');
-	}
-
-	if (!options.embed.title) {
-		options.embed.title = 'Calculator | Sudo Development';
-	}
-	if (typeof options.embed.title !== 'string') {
-		throw new TypeError('Sudo Error: embed title must be a string.');
-	}
-
+	if (typeof options.embed !== 'object') throw new TypeError('Sudo Error: embed must be an object.');
+	if (!options.embed.title) options.embed.title = 'Calculator | Sudo Development';
+	if (typeof options.embed.title !== 'string') throw new TypeError('Sudo Error: embed title must be a string.');
 	if (!options.embed.color) options.embed.color = functions.randomHexColor();
-	if (typeof options.embed.color !== 'string') {
-		throw new TypeError('Sudo Error: embed color must be a string.');
-	}
-
-	if (!options.embed.footer) {
-		options.embed.footer = '©️ Sudo Development';
-	}
-	if (typeof options.embed.footer !== 'string') {
-		throw new TypeError('Sudo Error: embed footer must be a string.');
-	}
-
+	if (typeof options.embed.color !== 'string') throw new TypeError('Sudo Error: embed color must be a string.');
+	if (!options.embed.footer) options.embed.footer = '©️ Sudo Development';
+	if (typeof options.embed.footer !== 'string') throw new TypeError('Sudo Error: embed footer must be a string.');
 	if (!options.embed.timestamp) options.embed.timestamp = true;
-	if (typeof options.embed.timestamp !== 'boolean') {
-		throw new TypeError('Sudo Error: timestamp must be a boolean.');
-	}
+	if (typeof options.embed.timestamp !== 'boolean') throw new TypeError('Sudo Error: timestamp must be a boolean.');
+	if (!options.disabledQuery) options.disabledQuery = 'Calculator is disabled!';
+	if (typeof options.disabledQuery !== 'string') throw new TypeError('Sudo Error: disabledQuery must be a string.');
 
-	if (!options.disabledQuery) {
-		options.disabledQuery = 'Calculator is disabled!';
-	}
-	if (typeof options.disabledQuery !== 'string') {
-		throw new TypeError('Sudo Error: disabledQuery must be a string.');
-	}
+	if (!options.invalidQuery) options.invalidQuery = 'The provided equation is invalid!';
+	if (typeof options.invalidQuery !== 'string') throw new TypeError('Sudo Error: invalidQuery must be a string.');
+	if (!options.othersMessage) options.othersMessage = 'Only <@{{author}}> can use the buttons!';
+	if (typeof options.othersMessage !== 'string') throw new TypeError('Sudo Error: othersMessage must be a string.');
 
-	if (!options.invalidQuery) {
-		options.invalidQuery = 'The provided equation is invalid!';
-	}
-	if (typeof options.invalidQuery !== 'string') {
-		throw new TypeError('Sudo Error: invalidQuery must be a string.');
-	}
+	if (options.message instanceof Discord.Interaction && !options.message.deferred) await options.message.deferReply();
 
-	if (!options.othersMessage) {
-		options.othersMessage = 'Only <@{{author}}> can use the buttons!';
-	}
-	if (typeof options.othersMessage !== 'string') {
-		throw new TypeError('Sudo Error: othersMessage must be a string.');
-	}
-
-	if (options.message instanceof Discord.Interaction && !options.message.deferred) {
-		await options.message.deferReply();
-	}
-
-	const authorId =
-		options.message instanceof Discord.Interaction
-			? options.message.user.id
-			: options.message.author.id;
+	const authorId =options.message instanceof Discord.Interaction? options.message.user.id: options.message.author.id;
 
 	let str = ' ';
 	let stringify = '```\n' + str + '\n```';
@@ -79,45 +37,15 @@ module.exports = async (options) => {
 	const button = new Array([], [], [], [], []);
 	const buttons = new Array([], [], [], [], []);
 
-	const text = [
-		'(',
-		')',
-		'^',
-		'%',
-		'AC',
-		'7',
-		'8',
-		'9',
-		'÷',
-		'DC',
-		'4',
-		'5',
-		'6',
-		'x',
-		'⌫',
-		'1',
-		'2',
-		'3',
-		'-',
-		'\u200b',
-		'.',
-		'0',
-		'=',
-		'+',
-		'\u200b',
-	];
+	const text = ['(',')','^','%','AC','7','8','9','÷','DC','4','5','6','x','⌫','1','2','3','-','\u200b','.','0','=','+','\u200b',];
 
 	let cur = 0;
 	let current = 0;
 
 	for (let i = 0; i < text.length; i++) {
 		if (button[current].length === 5) current++;
-		button[current].push(
-			functions.createButton(text[i], false, functions.getRandomID),
-		);
-		if (i === text.length - 1) {
-			for (const btn of button) row.push(functions.addRow(btn));
-		}
+		button[current].push(functions.createButton(text[i], false, functions.getRandomID),);
+		if (i === text.length - 1) for (const btn of button) row.push(functions.addRow(btn));
 	}
 
 	const embed = new Discord.MessageEmbed()
@@ -125,12 +53,9 @@ module.exports = async (options) => {
 		.setDescription(stringify)
 		.setColor(options.embed.color)
 		.setFooter(options.embed.footer);
-	if (options.embed.timestamp) {
-		embed.setTimestamp();
-	}
+	if (options.embed.timestamp) embed.setTimestamp();
 
-	const msg =
-		options.message instanceof Discord.Interaction
+	const msg = options.message instanceof Discord.Interaction
 			? await options.message.editReply({ embeds: [embed], components: row })
 			: await options.message.reply({ embeds: [embed], components: row });
 
@@ -140,9 +65,7 @@ module.exports = async (options) => {
 			.setDescription(stringify)
 			.setColor(options.embed.color)
 			.setFooter(options.embed.footer);
-		if (options.embed.timestamp) {
-			_embed.setTimestamp();
-		}
+		if (options.embed.timestamp) _embed.setTimestamp();
 		msg.edit({
 			embeds: [_embed],
 			components: row,
@@ -160,12 +83,8 @@ module.exports = async (options) => {
 		}
 		for (let i = 0; i < text.length; i++) {
 			if (buttons[cur].length === 5) cur++;
-			buttons[cur].push(
-				functions.createButton(text[i], true, functions.getRandomID),
-			);
-			if (i === text.length - 1) {
-				for (const btn of buttons) rows.push(functions.addRow(btn));
-			}
+			buttons[cur].push(functions.createButton(text[i], true, functions.getRandomID));
+			if (i === text.length - 1) for (const btn of buttons) rows.push(functions.addRow(btn));
 		}
 
 		msg.edit({
@@ -174,17 +93,11 @@ module.exports = async (options) => {
 		});
 	}
 
-	const calc = msg.createMessageComponentCollector({
-		filter: (fn) => fn,
-	});
+	const calc = msg.createMessageComponentCollector({filter: (fn) => fn});
 
 	calc.on('collect', async (btn) => {
-		if (btn.user.id !== authorId) {
-			return btn.reply({
-				content: options.othersMessage.replace('{{author}}', authorId),
-				ephemeral: true,
-			});
-		}
+		if (btn.user.id !== authorId) return btn.reply({content: options.othersMessage.replace('{{author}}', authorId),ephemeral: true});
+		
 		await btn.deferUpdate();
 		if (btn.customId === 'calAC') {
 			str = ' ';

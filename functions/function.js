@@ -2,9 +2,7 @@ const words = require('../data/words.json');
 const { MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-	getRandomID: function() {
-		return String(Math.random());
-	},
+	getRandomID: function() { return String(Math.random()) },
 	getRandomSentence: function(length) {
 		const word = [];
 		for (let i = 0; i < length; i++) {
@@ -64,9 +62,7 @@ module.exports = {
 		}
 		return array;
 	},
-	randomHexColor: function() {
-		return Math.floor(Math.random() * (0xffffff + 1));
-	},
+	randomHexColor: function() { return Math.floor(Math.random() * (0xffffff + 1)); },
 	checkForUpdates: async function() {
 		const package = require('../../../package.json');
 		const vLatest = require('../package.json').version;

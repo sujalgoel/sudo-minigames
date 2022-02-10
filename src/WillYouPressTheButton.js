@@ -4,89 +4,47 @@ const functions = require('../functions/function');
 
 module.exports = async (options) => {
 	functions.checkForUpdates();
-	if (!options.message) {
-		throw new Error('Sudo Error: message argument was not specified.');
-	}
-	if (typeof options.message !== 'object') {
-		throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
-	}
+	if (!options.message) throw new Error('Sudo Error: message argument was not specified.');
+	if (typeof options.message !== 'object') throw new TypeError('Sudo Error: Invalid Discord Message was provided.');
 
 	if (!options.embed) options.embed = {};
-	if (typeof options.embed !== 'object') {
-		throw new TypeError('Sudo Error: embed must be an object.');
-	}
+	if (typeof options.embed !== 'object') throw new TypeError('Sudo Error: embed must be an object.');
 
-	if (!options.embed.title) {
-		options.embed.title = 'Will you press the button? | Sudo Development';
-	}
-	if (typeof options.embed.title !== 'string') {
-		throw new TypeError('Sudo Error: embed title must be a string.');
-	}
+	if (!options.embed.title) options.embed.title = 'Will you press the button? | Sudo Development';
+	if (typeof options.embed.title !== 'string') throw new TypeError('Sudo Error: embed title must be a string.');
 
-	if (!options.embed.description) {
-		options.embed.description =
-			'```{{statement1}}```\n**but**\n\n```{{statement2}}```';
-	}
-	if (typeof options.embed.description !== 'string') {
-		throw new TypeError('Sudo Error: embed description must be a string.');
-	}
+	if (!options.embed.description) options.embed.description = '```{{statement1}}```\n**but**\n\n```{{statement2}}```';
+	if (typeof options.embed.description !== 'string') throw new TypeError('Sudo Error: embed description must be a string.');
 
 	if (!options.embed.color) options.embed.color = functions.randomHexColor();
-	if (typeof options.embed.color !== 'string') {
-		throw new TypeError('Sudo Error: embed color must be a string.');
-	}
+	if (typeof options.embed.color !== 'string') throw new TypeError('Sudo Error: embed color must be a string.');
 
-	if (!options.embed.footer) {
-		options.embed.footer = '©️ Sudo Development';
-	}
-	if (typeof options.embed.footer !== 'string') {
-		throw new TypeError('Sudo Error: embed footer must be a string.');
-	}
+	if (!options.embed.footer) options.embed.footer = '©️ Sudo Development';
+	if (typeof options.embed.footer !== 'string') throw new TypeError('Sudo Error: embed footer must be a string.');
 
 	if (!options.embed.timestamp) options.embed.timestamp = true;
-	if (typeof options.embed.timestamp !== 'boolean') {
-		throw new TypeError('Sudo Error: timestamp must be a boolean.');
-	}
+	if (typeof options.embed.timestamp !== 'boolean') throw new TypeError('Sudo Error: timestamp must be a boolean.');
 
 	if (!options.button) options.button = {};
-	if (typeof options.embed !== 'object') {
-		throw new TypeError('Sudo Error: buttons must be an object.');
-	}
+	if (typeof options.embed !== 'object') throw new TypeError('Sudo Error: buttons must be an object.');
 
 	if (!options.button.yes) options.button.yes = 'Yes';
-	if (typeof options.button.yes !== 'string') {
-		throw new TypeError('Sudo Error: yesLabel must be a string.');
-	}
+	if (typeof options.button.yes !== 'string') throw new TypeError('Sudo Error: yesLabel must be a string.');
 
 	if (!options.button.no) options.button.no = 'No';
-	if (typeof options.button.no !== 'string') {
-		throw new TypeError('Sudo Error: noLabel must be a string.');
-	}
+	if (typeof options.button.no !== 'string') throw new TypeError('Sudo Error: noLabel must be a string.');
 
 	if (!options.thinkMessage) options.thinkMessage = 'I am thinking';
-	if (typeof options.thinkMessage !== 'string') {
-		throw new TypeError('Sudo Error: thinkMessage must be a boolean.');
-	}
+	if (typeof options.thinkMessage !== 'string') throw new TypeError('Sudo Error: thinkMessage must be a boolean.');
 
-	if (!options.othersMessage) {
-		options.othersMessage = 'Only <@{{author}}> can use the buttons!';
-	}
-	if (typeof options.othersMessage !== 'string') {
-		throw new TypeError('Sudo Error: othersMessage must be a string.');
-	}
+	if (!options.othersMessage) options.othersMessage = 'Only <@{{author}}> can use the buttons!';
+	if (typeof options.othersMessage !== 'string') throw new TypeError('Sudo Error: othersMessage must be a string.');
 
-	if (!options.apiKey) {
-		throw new Error(
-			'Sudo Error: apiKey must be specified. \nVisit https://api.sujalgoel.engineer/ to get yourself one.',
-		);
-	}
-	if (typeof options.apiKey !== 'string') {
-		throw new TypeError('Sudo Error: apiKey must be a string.');
-	}
+	if (!options.apiKey) throw new Error('Sudo Error: apiKey must be specified. \nVisit https://api.sujalgoel.engineer/ to get yourself one.',);
+	if (typeof options.apiKey !== 'string') throw new TypeError('Sudo Error: apiKey must be a string.');
 
-	const id1 = functions.getRandomID(20);
-
-	const id2 = functions.getRandomID(20);
+	const id1 = functions.getRandomID();
+	const id2 = functions.getRandomID();
 
 	const think = await options.message.reply({
 		embeds: [
