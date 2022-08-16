@@ -45,7 +45,4 @@ await Calculator({
 - Feel free to check **[issues page](https://github.com/SudoDevelopment/sudo-minigames/issues)**.
 
 ## Developers 👨‍💻
-- **[Sujal Goel#7602](https://github.com/sujalgoel)**
-
-## Support ❔
-<a href="https://discord.gg/EKQtnY8Z9h"><img src="https://invidget.switchblade.xyz/EKQtnY8Z9h" /></a>
+- **[Sujal Goel#0001](https://github.com/sujalgoel)**
