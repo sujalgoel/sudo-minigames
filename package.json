@@ -21,7 +21,7 @@
 		"url": "https://github.com/SudoDevelopment/sudo-minigames.git"
 	},
 	"dependencies": {
-		"axios": "^0.25.0",
+		"axios": "^1.2.1",
 		"chalk": "^5.0.0",
 		"discord.js": "^13.6.0",
 		"mathjs": "^10.1.0",
